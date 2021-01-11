@@ -147,6 +147,10 @@ class Update(object):
             )
         ssrSpeedTable.print()
 
+    def clearSSRNodes(self):
+        u.ssrInfoList.clear()
+        u.updateCacheJson(i.ssrListJsonFile, u.ssrInfoList)
+
     def addSSRNode(self, ssrUrl):
         ssrInfo = ParseShadowsocksR.parseShadowsocksR(ssrUrl)
         ssrInfo = s.testSSRConnect(ssrInfo)

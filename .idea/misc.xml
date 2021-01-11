@@ -1,7 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="JavaScriptSettings">
-    <option name="languageLevel" value="ES6" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="ssr-command-client" project-jdk-type="Python SDK">
+    <output url="file://$PROJECT_DIR$/out" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.7 (ssr-command-client)" project-jdk-type="Python SDK" />
+  <component name="SbtLocalSettings">
+    <option name="modificationStamps">
+      <map>
+        <entry key="F:/project/IntelliJIDEAworkspace/projects/ScalaProjects/BlitzClient" value="1445400046994" />
+        <entry key="F:/project/IntelliJIDEAworkspace/projects/ScalaProjects/duobao" value="1444384188104" />
+        <entry key="F:/project/IntelliJIDEAworkspace/projects/ScalaProjects/play-slick-master" value="11520506464000" />
+        <entry key="F:/project/eclipse44workspace/SearchService/Statistics/Blitz/BlitzClient" value="1445940022000" />
+      </map>
+    </option>
+    <option name="externalProjectsViewState">
+      <projects_view />
+    </option>
+  </component>
+  <component name="ScalaSbtSettings">
+    <option name="customLauncherEnabled" value="true" />
+    <option name="customLauncherPath" value="E:\thirdPackage\src\sbt\sbt\bin\sbt-launch.jar" />
+    <option name="vmParameters" value="" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration>C:\Users\simone\AppData\Roaming\Subversion</configuration>
+  </component>
 </project>

@@ -6,6 +6,11 @@ __pycache__/
 # C extensions
 *.so
 
+.idea
+poetry.lock
+poetry.toml
+pyproject.toml
+
 # Distribution / packaging
 .Python
 build/

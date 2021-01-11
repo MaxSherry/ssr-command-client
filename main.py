@@ -17,7 +17,7 @@ def get_parser():
                                      epilog=color.yellow('Powered by ') +
                                             color.green('tyrantlucifer') +
                                             color.yellow('. If you have any questions,you can send e-mails to ') +
-                                                         color.green('tyrantlucifer@gmail.com'))
+                                            color.green('tyrantlucifer@gmail.com'))
     parser.add_argument("-l", "--list", action="store_true", help="show ssr list")
     parser.add_argument("-p", "--port", default=1080, metavar="local_port", type=int,
                         help="assign local proxy port,use with -s")
@@ -36,6 +36,8 @@ def get_parser():
     parser.add_argument("--remove-url", metavar="ssr_subscribe_url", help="remove ssr subscribe url")
     parser.add_argument("--list-address", action="store_true", help="list ssr local address")
     parser.add_argument("--parse-url", metavar="ssr_url", help="pares ssr url")
+    parser.add_argument("--setting-ssr", metavar="setting_ssr", help="setting ssr node")
+    parser.add_argument("--clear-ssr", action="store_true", help="clear all ssr node")
     parser.add_argument("--add-ssr", metavar="ssr_url", help="add ssr node")
     parser.add_argument("--test-again", metavar="ssr_node_id", type=int, help="test ssr node again")
     parser.add_argument("--print-qrcode", metavar="ssr_node_id", type=int, help="print ssr node qrcode")
@@ -67,6 +69,15 @@ def main():
         d.displayVersion()
     elif args.setting_url:
         u.updateSubcribeUrl(args.setting_url)
+    elif args.setting_ssr:
+        if not os.path.isfile(args.setting_ssr):
+            logger.error(f'setting_ssr file {args.setting_ssr} is not exists')
+            return
+        with open(args.setting_ssr, 'r') as f:
+            for ssr in ParseShadowsocksR.base64Decode(f.read()).splitlines():
+                u.addSSRNode(ssr)
+    elif args.clear_ssr:
+        u.clearSSRNodes()
     elif args.setting_address:
         u.updateLocalAddress(args.setting_address)
     elif args.list_url:

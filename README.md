@@ -98,6 +98,10 @@ optional arguments:
 
 --close-system-proxy 关闭系统代理选项，注：只支持Ubuntu Desktop
 
+--setting-ssr 订阅地址需要翻墙才能打开，所以这里通过其它手段得到订阅地址的内容（内容是base64编码的），setting-ssr为指定的系统txt文件，批量添加ssr节点
+
+--clear-ssr 将ssr列表信息清空 
+
 ```
 
 ## 简单示例
