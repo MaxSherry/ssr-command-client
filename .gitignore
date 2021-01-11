@@ -8,8 +8,6 @@ __pycache__/
 
 .idea
 poetry.lock
-poetry.toml
-pyproject.toml
 
 # Distribution / packaging
 .Python
