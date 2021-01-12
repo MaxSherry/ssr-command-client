@@ -1,0 +1,1 @@
+poetry run pyinstaller -F main.py

@@ -2,13 +2,11 @@
 
 block_cipher = None
 
-from PyInstaller.utils.hooks import copy_metadata
-datas = copy_metadata('prettytable')
 
 a = Analysis(['main.py'],
              pathex=['E:\\tmp\\ssr-command-client'],
              binaries=[],
-             datas=datas,
+             datas=[],
              hiddenimports=[],
              hookspath=[],
              runtime_hooks=[],

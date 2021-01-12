@@ -37,6 +37,7 @@ def get_parser():
     parser.add_argument("--list-address", action="store_true", help="list ssr local address")
     parser.add_argument("--parse-url", metavar="ssr_url", help="pares ssr url")
     parser.add_argument("--setting-ssr", metavar="setting_ssr", help="setting ssr node")
+    parser.add_argument("-b", action="store_true", help="setting_ssr is base64")
     parser.add_argument("--clear-ssr", action="store_true", help="clear all ssr node")
     parser.add_argument("--add-ssr", metavar="ssr_url", help="add ssr node")
     parser.add_argument("--test-again", metavar="ssr_node_id", type=int, help="test ssr node again")
@@ -73,9 +74,16 @@ def main():
         if not os.path.isfile(args.setting_ssr):
             logger.error(f'setting_ssr file {args.setting_ssr} is not exists')
             return
-        with open(args.setting_ssr, 'r') as f:
-            for ssr in ParseShadowsocksR.base64Decode(f.read()).splitlines():
-                u.addSSRNode(ssr)
+        with open(args.setting_ssr, 'r', encoding='UTF-8') as f:
+            txt = f.read()
+        if args.b:
+            txt = ParseShadowsocksR.base64Decode(txt)
+        ssr_set = set()
+        for line in txt.splitlines():
+            for ssr in re.findall(r'ssr://[0-9a-zA-Z=-_/+]+', line):
+                ssr_set.add(ssr)
+        for ssr in ssr_set:
+            u.addSSRNode(ssr)
     elif args.clear_ssr:
         u.clearSSRNodes()
     elif args.setting_address:
