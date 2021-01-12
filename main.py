@@ -38,7 +38,9 @@ def get_parser():
     parser.add_argument("--parse-url", metavar="ssr_url", help="pares ssr url")
     parser.add_argument("--setting-ssr", metavar="setting_ssr", help="setting ssr node")
     parser.add_argument("-b", action="store_true", help="setting_ssr is base64")
-    parser.add_argument("--clear-ssr", action="store_true", help="clear all ssr node")
+    parser.add_argument("--clear-ssr", metavar="ssr_id", nargs="?", const="fail",
+                        help="if ssr_id is not empty, clear ssr node by ssr_id, else clear fail nodes")
+    parser.add_argument("-all", action="store_true", help="clear all ssr node")
     parser.add_argument("--add-ssr", metavar="ssr_url", help="add ssr node")
     parser.add_argument("--test-again", metavar="ssr_node_id", type=int, help="test ssr node again")
     parser.add_argument("--print-qrcode", metavar="ssr_node_id", type=int, help="print ssr node qrcode")
@@ -85,7 +87,7 @@ def main():
         for ssr in ssr_set:
             u.addSSRNode(ssr)
     elif args.clear_ssr:
-        u.clearSSRNodes()
+        u.clearSSRNodes(args.clear_ssr, args.all)
     elif args.setting_address:
         u.updateLocalAddress(args.setting_address)
     elif args.list_url:

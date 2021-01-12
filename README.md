@@ -100,7 +100,7 @@ optional arguments:
 
 --setting-ssr  -b (内容是否是base64编码的) 订阅地址需要翻墙才能打开，所以这里通过其它手段得到订阅地址的内容（内容是base64编码的），setting-ssr为指定的系统txt文件，批量添加ssr节点
 
---clear-ssr 将ssr列表信息清空 
+--clear-ssr ssr_id 如果ssr_id不为空，将根据ssr_id删除对应的ssr节点，如果ssr_id为空，将删除失效的ssr节点。 -all 将ssr列表信息清空 
 
 ```
 

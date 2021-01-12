@@ -147,8 +147,13 @@ class Update(object):
             )
         ssrSpeedTable.print()
 
-    def clearSSRNodes(self):
-        u.ssrInfoList.clear()
+    def clearSSRNodes(self, clear_ssr, all):
+        if all:
+            u.ssrInfoList.clear()
+        elif clear_ssr == 'fail':
+            u.ssrInfoList[:] = [ssrInfo for ssrInfo in u.ssrInfoList if ssrInfo['connect']]
+        else:
+            del u.ssrInfoList[int(clear_ssr)]
         u.updateCacheJson(i.ssrListJsonFile, u.ssrInfoList)
 
     def addSSRNode(self, ssrUrl):
