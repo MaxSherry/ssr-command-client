@@ -154,9 +154,15 @@ class Update(object):
             u.ssrInfoList[:] = [ssrInfo for ssrInfo in u.ssrInfoList if ssrInfo['connect']]
         else:
             del u.ssrInfoList[int(clear_ssr)]
+        for ssrInfo in u.ssrInfoList:
+            ssrInfo['id'] = u.ssrInfoList.index(ssrInfo)
         u.updateCacheJson(i.ssrListJsonFile, u.ssrInfoList)
 
     def addSSRNode(self, ssrUrl):
+        for ssrInfo in u.ssrInfoList:
+            if ssrUrl == ssrInfo['ssr_url']:
+                logger.info(f'add ssr node is exist {ssrUrl}')
+                return
         ssrInfo = ParseShadowsocksR.parseShadowsocksR(ssrUrl)
         ssrInfo = s.testSSRConnect(ssrInfo)
         ssrInfo['id'] = len(u.ssrInfoList)

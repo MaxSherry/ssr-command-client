@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0008bd76-ab60-41db-a647-4e949b7293ca" name="Default Changelist" comment="test-speed测速报异常问题修复，添加--setting-ssr添加-b参数，用来判断是否进行base64解码，通过正则抽取ssr协议这样可以直接从一些html网页的源码中提取ssr协议">
+    <list default="true" id="0008bd76-ab60-41db-a647-4e949b7293ca" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/funcitions/Functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/funcitions/Functions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
@@ -121,7 +120,13 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="CUSTOM_BOOLEAN_PROPERTIES">
+                <map>
+                  <entry key="Show.Git.Branches" value="true" />
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -132,7 +137,8 @@
     <MESSAGE value="添加setting-ssr和clear-ssr两个命令" />
     <MESSAGE value="添加poetry环境配置" />
     <MESSAGE value="test-speed测速报异常问题修复，添加--setting-ssr添加-b参数，用来判断是否进行base64解码，通过正则抽取ssr协议这样可以直接从一些html网页的源码中提取ssr协议" />
-    <option name="LAST_COMMIT_MESSAGE" value="test-speed测速报异常问题修复，添加--setting-ssr添加-b参数，用来判断是否进行base64解码，通过正则抽取ssr协议这样可以直接从一些html网页的源码中提取ssr协议" />
+    <MESSAGE value="clear-ssr删除操作添加-all和ssr_id参数" />
+    <option name="LAST_COMMIT_MESSAGE" value="clear-ssr删除操作添加-all和ssr_id参数" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/ssr_command_client$test.coverage" NAME="test Coverage Results" MODIFIED="1610347877466" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

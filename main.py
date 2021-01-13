@@ -36,8 +36,8 @@ def get_parser():
     parser.add_argument("--remove-url", metavar="ssr_subscribe_url", help="remove ssr subscribe url")
     parser.add_argument("--list-address", action="store_true", help="list ssr local address")
     parser.add_argument("--parse-url", metavar="ssr_url", help="pares ssr url")
-    parser.add_argument("--setting-ssr", metavar="setting_ssr", help="setting ssr node")
-    parser.add_argument("-b", action="store_true", help="setting_ssr is base64")
+    parser.add_argument("--append-ssr", metavar="ssr_file_path", help="append ssr nodes from file")
+    parser.add_argument("-b", action="store_true", help="append_ssr file is base64")
     parser.add_argument("--clear-ssr", metavar="ssr_id", nargs="?", const="fail",
                         help="if ssr_id is not empty, clear ssr node by ssr_id, else clear fail nodes")
     parser.add_argument("-all", action="store_true", help="clear all ssr node")
@@ -72,11 +72,11 @@ def main():
         d.displayVersion()
     elif args.setting_url:
         u.updateSubcribeUrl(args.setting_url)
-    elif args.setting_ssr:
-        if not os.path.isfile(args.setting_ssr):
-            logger.error(f'setting_ssr file {args.setting_ssr} is not exists')
+    elif args.append_ssr:
+        if not os.path.isfile(args.append_ssr):
+            logger.error(f'append_ssr file {args.append_ssr} is not exists')
             return
-        with open(args.setting_ssr, 'r', encoding='UTF-8') as f:
+        with open(args.append_ssr, 'r', encoding='UTF-8') as f:
             txt = f.read()
         if args.b:
             txt = ParseShadowsocksR.base64Decode(txt)
