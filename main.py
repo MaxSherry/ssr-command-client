@@ -5,6 +5,8 @@
 '''
 
 import argparse
+import traceback
+
 from funcitions.Functions import *
 
 u = Update()
@@ -85,7 +87,12 @@ def main():
             for ssr in re.findall(r'ssr://[0-9a-zA-Z=-_/+]+', line):
                 ssr_set.add(ssr)
         for ssr in ssr_set:
-            u.addSSRNode(ssr)
+            try:
+                u.addSSRNode(ssr)
+            except Exception as e:
+                logger.error(f'add ssr node error {ssr}')
+                logger.error(traceback.format_exc())
+                
     elif args.clear_ssr:
         u.clearSSRNodes(args.clear_ssr, args.all)
     elif args.setting_address:
