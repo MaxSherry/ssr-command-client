@@ -53,6 +53,8 @@ class ControlSSR(object):
         except Exception as e:
             if 'event' in kwargs:
                 kwargs['event'].set()
+            if 'update' in kwargs:
+                kwargs['update'].clearSSRNodes(ssrDict['id'])
             logger.error(e)
             sys.exit(1)
 

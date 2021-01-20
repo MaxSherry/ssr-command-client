@@ -66,9 +66,9 @@ def main():
         u.updateSubscribe()
     elif args.fast_node:
         h.startFastNode()
-    elif args.start:
-        h.start(ssr_id=args.start, port=args.port)
-    elif args.stop:
+    elif args.start is not None:
+        h.start(ssr_id=args.start, port=args.port, update=u)
+    elif args.stop is not None:
         h.stop(ssr_id=args.stop, port=args.port)
     elif args.version:
         d.displayVersion()
@@ -92,7 +92,6 @@ def main():
             except Exception as e:
                 logger.error(f'add ssr node error {ssr}')
                 logger.error(traceback.format_exc())
-                
     elif args.clear_ssr:
         u.clearSSRNodes(args.clear_ssr, args.all)
     elif args.setting_address:

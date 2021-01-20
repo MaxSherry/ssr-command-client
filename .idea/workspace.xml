@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0008bd76-ab60-41db-a647-4e949b7293ca" name="Default Changelist" comment="">
+    <list default="true" id="0008bd76-ab60-41db-a647-4e949b7293ca" name="Default Changelist" comment="打包操作修改">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.spec" beforeDir="false" afterPath="$PROJECT_DIR$/main.spec" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/funcitions/Functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/funcitions/Functions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/HandleSSRUtils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/HandleSSRUtils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -152,7 +154,8 @@
     <MESSAGE value="修复部分ssr协议不规范问题" />
     <MESSAGE value="使用python3.9版本，修正一些警告" />
     <MESSAGE value="写入文件使用utf-8，判断remarks是否为空修复" />
-    <option name="LAST_COMMIT_MESSAGE" value="写入文件使用utf-8，判断remarks是否为空修复" />
+    <MESSAGE value="打包操作修改" />
+    <option name="LAST_COMMIT_MESSAGE" value="打包操作修改" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/ssr_command_client$test.coverage" NAME="test Coverage Results" MODIFIED="1610608453590" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

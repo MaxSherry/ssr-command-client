@@ -40,12 +40,13 @@ class Handler(object):
         pass
 
     @is_id_valid
-    def start(self, ssr_id, port=1080):
+    def start(self, ssr_id, port=1080, update=None):
         if i.platform == 'win32':
             h.startOnWindows(u.ssrInfoList[ssr_id], settings.local_address,
                              port,
                              settings.timeout,
-                             settings.workers)
+                             settings.workers,
+                             update=update)
         else:
             h.startOnUnix(u.ssrInfoList[ssr_id], settings.local_address,
                           port,
@@ -147,7 +148,7 @@ class Update(object):
             )
         ssrSpeedTable.print()
 
-    def clearSSRNodes(self, clear_ssr, all):
+    def clearSSRNodes(self, clear_ssr, all=None):
         if all:
             u.ssrInfoList.clear()
         elif clear_ssr == 'fail':
