@@ -1,3 +1,5 @@
+from multiprocessing import Lock
+
 from utils.InitUtils import *
 from utils.SettingUtils import *
 from utils.ParseUtils import *
@@ -40,20 +42,22 @@ class Handler(object):
         pass
 
     @is_id_valid
-    def start(self, ssr_id, port=1080, update=None):
+    def start(self, ssr_id, port=1080):
+        lock = Lock()
         if i.platform == 'win32':
             h.startOnWindows(u.ssrInfoList[ssr_id], settings.local_address,
                              port,
                              settings.timeout,
                              settings.workers,
-                             update=update)
+                             lock)
         else:
             h.startOnUnix(u.ssrInfoList[ssr_id], settings.local_address,
                           port,
                           settings.timeout,
                           settings.workers,
                           i.pidFilePath,
-                          i.logFilePath)
+                          i.logFilePath,
+                          lock)
 
     @is_id_valid
     def stop(self, ssr_id, port=1080):

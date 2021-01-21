@@ -4,13 +4,12 @@
 @Date: 2020/12/7 上午12:14
 '''
 
-import socks
+import multiprocessing.pool
 import socket
 import sys
-from . import multiprocessing_win
+from multiprocessing import Pool, Process
 
-from multiprocessing import Event, Pool, Process
-import multiprocessing.pool
+import socks
 
 sys.path.append('../')
 
@@ -18,19 +17,23 @@ from speedtest import speedtest
 from utils.PrintUtils import *
 from utils.HandleSSRUtils import *
 
-c = ControlSSR()
 color = Colored()
+
 
 class NoDaemonProcess(multiprocessing.Process):
     # make 'daemon' attribute always return False
     def _get_daemon(self):
         return False
+    
     def _set_daemon(self, value):
         pass
+    
     daemon = property(_get_daemon, _set_daemon)
+
 
 class NoDaemonContext(type(multiprocessing.get_context())):
     Process = NoDaemonProcess
+
 
 class MyPool(multiprocessing.pool.Pool):
     def __init__(self, *args, **kwargs):
@@ -39,10 +42,10 @@ class MyPool(multiprocessing.pool.Pool):
 
 
 class SSRSpeedTest(object):
-
+    
     def __init__(self):
         pass
-
+    
     def isValidConnect(self, server, port):
         serverAddr = (server, port)
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -60,22 +63,21 @@ class SSRSpeedTest(object):
         else:
             delay = (endTime - startTime).microseconds / 1000
             return True, str(delay)
-
+    
     def testSSRConnect(self, ssrDict):
         connect, ping = self.isValidConnect(ssrDict['server'],
-                                               int(ssrDict['server_port']))
+                                            int(ssrDict['server_port']))
         ssrDict['ping'] = ping
         ssrDict['connect'] = connect
         return ssrDict
-
+    
     def testSSRSpeed(self, ssrDict, *args):
         # if ssrDict['connect']:
         if True:
-            event = Event()
-            p = Process(target=c.startOnWindows, args=(ssrDict, *args), kwargs={'event': event})
+            from funcitions.Functions import h
+            p = Process(target=h.startOnWindows, args=(ssrDict, *args))
             p.daemon = True
             p.start()
-            event.wait(60)
             socks.set_default_proxy(socks.SOCKS5, args[0], args[1])
             socket.socket = socks.socksocket
             try:
@@ -96,9 +98,9 @@ class SSRSpeedTest(object):
         else:
             ssrDict['download'] = '∞'
             ssrDict['upload'] = '∞'
-
+        
         return ssrDict
-
+    
     @calculate
     def connectThreadPool(self, func, args):
         multiprocessing.freeze_support()
@@ -110,21 +112,23 @@ class SSRSpeedTest(object):
         pool.close()
         pool.join()
         return threadList
-
+    
     @calculate
     def speedThreadPool(self, func, args):
         multiprocessing.freeze_support()
         port = 60000
         threadList = list()
         pool = MyPool(len(args))
+        manager = multiprocessing.Manager()
+        lock = manager.Lock()
         for arg in args:
-            thread = pool.apply_async(func, (arg, '127.0.0.1', port, 300, 1))
+            thread = pool.apply_async(func, (arg, '127.0.0.1', port, 300, 1, lock))
             threadList.append(thread)
             port = port + 1
         pool.close()
         pool.join()
         return threadList
-
+    
     @calculate
     def startConnectTest(self, ssrDictList):
         result = list()
@@ -132,7 +136,7 @@ class SSRSpeedTest(object):
         for thread in threadList:
             result.append(thread.get())
         return result
-
+    
     @calculate
     def startSpeedTest(self, ssrDictList):
         result = list()

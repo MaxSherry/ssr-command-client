@@ -24,7 +24,7 @@ def get_parser():
     parser.add_argument("-p", "--port", default=1080, metavar="local_port", type=int,
                         help="assign local proxy port,use with -s")
     parser.add_argument("-s", "--start", metavar="ssr_id", type=int, help="start ssr proxy")
-    parser.add_argument("-S", "--stop", default=0, metavar="ssr_id", type=int, help="stop ssr proxy")
+    parser.add_argument("-S", "--stop", metavar="ssr_id", type=int, help="stop ssr proxy")
     parser.add_argument("-u", "--update", action="store_true", help="update ssr list")
     parser.add_argument("-v", "--version", action="store_true", help="display version")
     parser.add_argument("--upgrade", action="store_true", help="upgrade ssr command client")
@@ -67,7 +67,7 @@ def main():
     elif args.fast_node:
         h.startFastNode()
     elif args.start is not None:
-        h.start(ssr_id=args.start, port=args.port, update=u)
+        h.start(ssr_id=args.start, port=args.port)
     elif args.stop is not None:
         h.stop(ssr_id=args.stop, port=args.port)
     elif args.version:
