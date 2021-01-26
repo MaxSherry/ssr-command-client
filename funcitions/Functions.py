@@ -37,7 +37,7 @@ def is_ubuntu(func):
 
 
 class Handler(object):
-    runnig_ssr_id_file = os.path.join(i.configDir, 'running_ssr.id')
+    running_ssr_id_file = os.path.join(i.configDir, 'running_ssr.id')
     
     def __init__(self):
         pass
@@ -52,6 +52,8 @@ class Handler(object):
                              settings.workers,
                              lock)
         else:
+            with open(self.running_ssr_id_file, 'w') as f:
+                f.write(str(ssr_id))
             h.startOnUnix(u.ssrInfoList[ssr_id], settings.local_address,
                           port,
                           settings.timeout,
@@ -59,13 +61,10 @@ class Handler(object):
                           i.pidFilePath,
                           i.logFilePath,
                           lock)
-            with open(self.runnig_ssr_id_file, 'w') as f:
-                f.write(ssr_id)
 
-    @is_id_valid
     def stop(self, ssr_id, port=1080):
         if ssr_id == -1:
-            with open(self.runnig_ssr_id_file, 'r') as f:
+            with open(self.running_ssr_id_file, 'r') as f:
                 ssr_id = int(f.readline())
         h.stopOnUnix(u.ssrInfoList[ssr_id], settings.local_address,
                      port,
