@@ -8,8 +8,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/funcitions/Functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/funcitions/Functions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/HandleSSRUtils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/HandleSSRUtils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/SSRTestUtils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/SSRTestUtils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -157,7 +155,8 @@
     <MESSAGE value="写入文件使用utf-8，判断remarks是否为空修复" />
     <MESSAGE value="打包操作修改" />
     <MESSAGE value="start失败，直接删除当前无用的节点，修复start，stop命令ssr_id值为0执行不了的情况" />
-    <option name="LAST_COMMIT_MESSAGE" value="start失败，直接删除当前无用的节点，修复start，stop命令ssr_id值为0执行不了的情况" />
+    <MESSAGE value="测速异常，删除对应的ssr_id时，加锁处理。优化相关的代码" />
+    <option name="LAST_COMMIT_MESSAGE" value="测速异常，删除对应的ssr_id时，加锁处理。优化相关的代码" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/ssr_command_client$test.coverage" NAME="test Coverage Results" MODIFIED="1610608453590" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
