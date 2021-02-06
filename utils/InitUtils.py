@@ -10,11 +10,12 @@ import sys
 import json
 import configparser
 import platform
+import yaml
 
 class InitConfigDir(object):
 
     def __init__(self):
-        self.version = '2.0.2'
+        self.version = '2.1.0'
         self.platform = sys.platform
         self.system = platform.system()
         self.homeDir = os.path.expanduser('~')
@@ -36,6 +37,8 @@ class InitConfigDir(object):
                                         'config.json')
         self.pacFilePath = os.path.join(self.configDir,
                                         'autoproxy.pac')
+        self.clashConfigFilePath = os.path.join(self.configDir,
+                                                'clashConfig.yaml')
         self.subscribeUrl = 'https://tyrantlucifer.com/ssr/ssr.txt'
         self.localAddress = '127.0.0.1'
         self.timeout = 300
