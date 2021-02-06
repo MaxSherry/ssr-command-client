@@ -16,6 +16,7 @@ colorama = "^0.4.4"
 urllib3 = "^1.26.2"
 prettytable = "^2.0.0"
 requests = "^2.25.1"
+PyYAML = "^5.4.1"
 
 [tool.poetry.dev-dependencies]
 pyinstaller = "^4.1"
