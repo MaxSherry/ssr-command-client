@@ -76,11 +76,8 @@ class ParseShadowsocksR(object):
                         key = 'obfs_param'
                     if key == 'protoparam':
                         key = 'protocol_param'
-                    if value:
-                        if key in keyList:
-                            ssrDict[key] = ParseShadowsocksR.base64Decode(requests.utils.unquote(value))
-                if 'remarks' not in ssrDict:
-                    ssrDict['remarks'] = 'unknown'
+                    if key in keyList:
+                        ssrDict[key] = ParseShadowsocksR.base64Decode(value)
                 ssrDict['server'] = server
                 ssrDict['server_port'] = int(port)
                 ssrDict['method'] = method
@@ -132,7 +129,7 @@ class UpdateSubscribeUrl(object):
 
     def getNodeInfoList(self, cacheJsonPath, urlList):
         if os.path.exists(cacheJsonPath):
-            with open(cacheJsonPath, 'r', encoding='UTF-8') as file:
+            with open(cacheJsonPath, 'r') as file:
                 content = file.read()
                 self.ssrInfoList = json.loads(content)
                 return self.ssrInfoList
@@ -154,12 +151,12 @@ class UpdateSubscribeUrl(object):
         for ssrInfo in self.ssrInfoList:
             ssrInfo['id'] = self.ssrInfoList.index(ssrInfo)
         content = json.dumps(self.ssrInfoList, ensure_ascii=False, indent=4)
-        with open(cacheJsonPath, 'w', encoding='UTF-8') as file:
+        with open(cacheJsonPath, 'w') as file:
             file.write(content)
         return self.ssrInfoList
 
     def updateCacheJson(self, catheJsonPath, ssrInfoList):
-        with open(catheJsonPath, 'w', encoding='UTF-8') as file:
+        with open(catheJsonPath, 'w') as file:
             content = json.dumps(ssrInfoList, ensure_ascii=False, indent=4)
             file.write(content)
         logger.info("Update cache json file successfully")

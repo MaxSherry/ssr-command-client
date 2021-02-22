@@ -1,5 +1,3 @@
-from multiprocessing import Lock
-
 from utils.InitUtils import *
 from utils.SettingUtils import *
 from utils.ParseUtils import *
@@ -37,35 +35,27 @@ def is_ubuntu(func):
 
 
 class Handler(object):
-    running_ssr_id_file = os.path.join(i.configDir, 'running_ssr.id')
-    
+
     def __init__(self):
         pass
 
     @is_id_valid
     def start(self, ssr_id, port=1080):
-        lock = Lock()
         if i.platform == 'win32':
             h.startOnWindows(u.ssrInfoList[ssr_id], settings.local_address,
                              port,
                              settings.timeout,
-                             settings.workers,
-                             lock)
+                             settings.workers)
         else:
-            with open(self.running_ssr_id_file, 'w') as f:
-                f.write(str(ssr_id))
             h.startOnUnix(u.ssrInfoList[ssr_id], settings.local_address,
                           port,
                           settings.timeout,
                           settings.workers,
                           i.pidFilePath,
-                          i.logFilePath,
-                          lock)
+                          i.logFilePath)
 
+    @is_id_valid
     def stop(self, ssr_id, port=1080):
-        if ssr_id == -1:
-            with open(self.running_ssr_id_file, 'r') as f:
-                ssr_id = int(f.readline())
         h.stopOnUnix(u.ssrInfoList[ssr_id], settings.local_address,
                      port,
                      settings.timeout,
@@ -143,8 +133,8 @@ class Update(object):
                 download = color.green(str(ssrInfo['download']))
                 upload = color.green(str(ssrInfo['upload']))
             else:
-                download = color.red(str(ssrInfo['download']))
-                upload = color.red(str(ssrInfo['upload']))
+                download = color.red(ssrInfo['download'])
+                upload = color.red(ssrInfo['upload'])
 
             ssrSpeedTable.append(
                 id=ssrInfo['id'],
@@ -157,22 +147,7 @@ class Update(object):
             )
         ssrSpeedTable.print()
 
-    def clearSSRNodes(self, clear_ssr, all=None):
-        if all:
-            u.ssrInfoList.clear()
-        elif clear_ssr == 'fail':
-            u.ssrInfoList[:] = [ssrInfo for ssrInfo in u.ssrInfoList if ssrInfo['connect']]
-        else:
-            del u.ssrInfoList[int(clear_ssr)]
-        for ssrInfo in u.ssrInfoList:
-            ssrInfo['id'] = u.ssrInfoList.index(ssrInfo)
-        u.updateCacheJson(i.ssrListJsonFile, u.ssrInfoList)
-
     def addSSRNode(self, ssrUrl):
-        for ssrInfo in u.ssrInfoList:
-            if ssrUrl == ssrInfo['ssr_url']:
-                logger.info(f'add ssr node is exist {ssrUrl}')
-                return
         ssrInfo = ParseShadowsocksR.parseShadowsocksR(ssrUrl)
         ssrInfo = s.testSSRConnect(ssrInfo)
         ssrInfo['id'] = len(u.ssrInfoList)

@@ -49,11 +49,6 @@ class ControlSSR(object):
             logger.info('Press Ctrl+C to stop shadowsocksR')
             loop.run()
         except Exception as e:
-            lock = args[4]
-            lock.acquire()
-            from main import u
-            u.clearSSRNodes(ssrDict['id'])
-            lock.release()
             logger.error(e)
             sys.exit(1)
 
@@ -93,11 +88,6 @@ class ControlSSR(object):
             logger.info('ShadowsocksR is start on {0}:{1}'.format(args[0], args[1]))
             loop.run()
         except Exception as e:
-            lock = args[4]
-            lock.acquire()
-            from main import u
-            u.clearSSRNodes(ssrDict['id'])
-            lock.release()
             logger.error(e)
             sys.exit(1)
 

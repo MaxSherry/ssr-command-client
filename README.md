@@ -1,21 +1,21 @@
-# The command client of ShadowsocksR based Python3
+# The command client of Shadowsocksr based Python3
 
-在命令行下使用的一款ShadowsocksR客户端
+在命令行下使用的一款Shadowsocksr客户端
 
 ## 特性
 
 - 全新`2.0`版本，在`1.0`基础上进行使用面向对象重构，并预留接口
 - 支持`Linux` + `Windows`双平台
-- 支持ShadowsocksR链接解析
-- 支持ShadowsocksR订阅链接解析(支持添加多个订阅地址)
+- 支持Shadowsocksr链接解析
+- 支持Shadowsocksr订阅链接解析(支持添加多个订阅地址)
 - 支持制定本地端口启动代理
-- 支持测试ShadowsocksR节点真连接延迟(多线程)
-- 支持测试ShadowsocksR节点是否被tcp阻断(多线程)
-- 支持ShadowsocksR节点测速(多线程)
-- 支持打印ShadowsocksR节点Json和二维码
-- 整合ShadowsocksR源码到项目中
+- 支持测试Shadowsocksr节点真连接延迟(多线程)
+- 支持测试Shadowsocksr节点是否被tcp阻断(多线程)
+- 支持Shadowsocksr节点测速(上传+下载)
+- 支持打印Shadowsocksr节点Json和二维码
+- 整合Shadowsocksr源码到项目中
 - 支持生成基础版clash配置文件 
-- 暂时不支持`ipv6`ShadowsocksR节点，解析时会默认屏蔽
+- 暂时不支持`ipv6`Shadowsocksr节点，解析时会默认屏蔽
 
 ## 安装方式
 
@@ -23,27 +23,28 @@
 ```shell
 git clone https://github.com/TyrantLucifer/ssr-command-client.git
 cd ssr-command-client
-python(pip3) install -r requirement.txt
+python(python3) setup.py install
 ```
 
-- 下载二进制文件
-> [Linux - ssr-command-client](https://github.com/TyrantLucifer/ssr-command-client/releases/download/v2.0.2/ssr-command-client_linux_amd64)
-
-> [Windows - ssr-command-client](https://github.com/TyrantLucifer/ssr-command-client/releases/download/v2.0.2/ssr-command-client_windows_amd64.exe)
+- pip安装
+```shell
+pip(pip3) install shadowsocksr-cli
+```
 
 ## 使用方法
 ```angular2html
-usage: ssr-commnd-client [-h] [-l] [-p local_port] [-s ssr_id] [-S ssr_id] [-u] [-v]
-                         [--display-json ssr_id] [--test-speed] [--fast-node]
-                         [--setting-url ssr_subscribe_url] [--upgrade]
-                         [--setting-address ssr_local_address] [--list-url]
-                         [--add-url ssr_subscribe_url] [--remove-url ssr_subscribe_url]
-                         [--list-address] [--parse-url ssr_url] [--add-ssr ssr_url]
-                         [--test-again ssr_node_id] [--print-qrcode ssr_node_id]
-                         [--setting-global-proxy] [--setting-pac-proxy]
-                         [--close-system-proxy] [--generate-clash]
-
-ShadowsocksR 命令行客户端
+usage: shadowsocksr-cli [-h] [-l] [-p local_port] [-s ssr_id] [-S [ssr_id]]
+                        [-u] [-v] [--generate-clash] [--display-json ssr_id]
+                        [--test-speed ssr_id] [--fast-node]
+                        [--setting-url ssr_subscribe_url]
+                        [--setting-address ssr_local_address] [--list-url]
+                        [--add-url ssr_subscribe_url]
+                        [--remove-url ssr_subscribe_url] [--list-address]
+                        [--parse-url ssr_url] [--add-ssr ssr_url]
+                        [--test-again ssr_node_id]
+                        [--print-qrcode ssr_node_id] [--setting-global-proxy]
+                        [--setting-pac-proxy] [--close-system-proxy]
+Shadowsocksr 命令行客户端
 
 optional arguments:
   -v, --version         版本信息
@@ -58,16 +59,15 @@ optional arguments:
 -s SSR_NODE_ID 启动Shadowsocks代理，SSR_NODE_ID为节点ID，可从打印列表中获得；
                如果不指定 -p 参数，那么默认代理启动在本地1080端口
 
--S SSR_NODE_ID 停止Shadowsocks代理，SSR_NODE_ID为节点ID，可从打印列表中获得；
-               只在Linux系统中生效
+-S [SSR_NODE_ID] 停止Shadowsocks代理，只在Unix环境下生效
 
 -u --update 更新SSR订阅列表
-
---upgrade 更新ssr-command-client,下载最新版本二进制文件到家目录
 
 --generate-clash 生成clash基础版配置文件
 
 --fast-node 根据节点真连接延迟自动选择最优节点，并在本地启动代理
+
+--test-speed SSR_NODE_ID 根据节点id测试节点上传下载速度
 
 --setting-url SUBSCRIBE_URL 重置ssr订阅链接，SUBSCRIBE_URL为订阅链接地址
                             注：如果订阅链接中有&符号，请用""将链接括起来
@@ -90,8 +90,6 @@ optional arguments:
 --add-ssr SSR_URL 手动添加ssr节点到当前列表中，SSR_URL为ssr链接地址，例如：ssr://xxxxxxxxxxxxxxxx
 
 --test-again SSR_NODE_ID 重新测试ssr节点连接状态，SSR_NODE_ID为节点ID，可从打印列表中获得
-
---test-speed 批量ssr节点测速
 
 --print-qrcode SSR_NODE_ID 打印ssr节点二维码，SSR_NODE_ID为节点ID，可从打印列表中获得
 
@@ -118,12 +116,50 @@ optional arguments:
 | 1  | SSRTOOL_Node:美国-密苏里州  |     200     |    √    |  69.30.201.82  | 8099 | aes-256-cfb |
 +----+----------------------------+-----------+---------+----------------+------+-------------+
 ```
-- 开启美国节点代理`python(python3) main.py -s 1`
-- 打印节点列表`python(python3) main.py -l`
-- 更新订阅列表`python(python3) main.py -u`
-- 重置订阅链接`python(python3) main.py --setting-url https://tyrantlucifer.com/ssr/ssr.txt`
-- 查看订阅链接列表`python(python3) main.py --list-url`
-- 查看本地监听地址`python(python3) main.py --list-adderss`
+- 开启美国节点代理` shadowsocksr-cli -s 1`
+- 打印节点列表` shadowsocksr-cli -l`
+- 更新订阅列表` shadowsocksr-cli -u`
+- 重置订阅链接` shadowsocksr-cli --setting-url https://tyrantlucifer.com/ssr/ssr.txt`
+- 查看订阅链接列表` shadowsocksr-cli --list-url`
+- 查看本地监听地址` shadowsocksr-cli --list-adderss`
+
+## API
+
+- 通过shadowsocksr链接解析节点信息
+
+```python
+import json
+from shadowsocksr_cli.parse_utils import *
+
+ssr_url = "ssr://NjkuMzAuMjAxLjgyOjgwOTk6b3JpZ2luOmFlcy0yNTYtY2ZiOnBsYWluOlpVbFhNRVJ1YXpZNU5EVTBaVFp1VTNkMWMzQjJPVVJ0VXpJd01YUlJNRVEvP3JlbWFya3M9VTFOU1ZFOVBURjlPYjJSbE91ZS1qdVdidlMzbHI0Ym9pNF9waDR6bHQ1NCZncm91cD1WMWRYTGxOVFVsUlBUMHd1UTA5Tg"
+ssr_dict = ParseShadowsocksr.parse_shadowsocksr(ssr_url)
+print(json.dumps(ssr_dict,
+                 ensure_ascii=False,
+                 indent=4))
+```
+
+- 通过shadowsocksr链接测试节点服务器和端口是否连通
+```python
+from shadowsocksr_cli.parse_utils import *
+from shadowsocksr_cli.network_test_utils import *
+
+ssr_url = "ssr://NjkuMzAuMjAxLjgyOjgwOTk6b3JpZ2luOmFlcy0yNTYtY2ZiOnBsYWluOlpVbFhNRVJ1YXpZNU5EVTBaVFp1VTNkMWMzQjJPVVJ0VXpJd01YUlJNRVEvP3JlbWFya3M9VTFOU1ZFOVBURjlPYjJSbE91ZS1qdVdidlMzbHI0Ym9pNF9waDR6bHQ1NCZncm91cD1WMWRYTGxOVFVsUlBUMHd1UTA5Tg"
+ssr_dict = ParseShadowsocksr.parse_shadowsocksr(ssr_url)
+ssr_dict = ShadowsocksrTest.test_shadowsocksr_connect(ssr_dict)
+print(ssr_dict['connect'],
+      ssr_dict['ping'])
+```
+
+- 通过shadowsocksr链接测试节点上传+下载速度
+```python
+from shadowsocksr_cli.parse_utils import *
+from shadowsocksr_cli.network_test_utils import *
+
+ssr_url = "ssr://NjkuMzAuMjAxLjgyOjgwOTk6b3JpZ2luOmFlcy0yNTYtY2ZiOnBsYWluOlpVbFhNRVJ1YXpZNU5EVTBaVFp1VTNkMWMzQjJPVVJ0VXpJd01YUlJNRVEvP3JlbWFya3M9VTFOU1ZFOVBURjlPYjJSbE91ZS1qdVdidlMzbHI0Ym9pNF9waDR6bHQ1NCZncm91cD1WMWRYTGxOVFVsUlBUMHd1UTA5Tg"
+ssr_dict = ParseShadowsocksr.parse_shadowsocksr(ssr_url)
+ssr_dict = ShadowsocksrTest.test_shadowsocksr_connect(ssr_dict)
+ShadowsocksrTest.test_shadowsocksr_speed(ssr_dict)
+```
 
 ## Linux终端设置代理方法
 
@@ -180,9 +216,14 @@ ip 查看ip归属地
 - Telegram:https://t.me/ssr_command_client
 - Personal Wechat
 
-![我的微信公众号](https://cdn.jsdelivr.net/gh/TyrantLucifer/MyImageRepository/img/wechat.jpg)
+|微信公众号|
+|---------|
+|<a href='#Tips'><img src="https://cdn.jsdelivr.net/gh/TyrantLucifer/MyImageRepository/img/wechat.jpg" height="300" width="300" /></a> |
 
 ## 致谢
 
 感谢Jetbrains给予开发本项目的正版工具支持，如果有商业需求，推荐购买正版[Jetbrains](https://www.jetbrains.com/?from=ssr-command-client)
-![Jetbrains](https://cdn.jsdelivr.net/gh/TyrantLucifer/MyImageRepository/img/jetbrains-variant-2.png)
+
+|Jetbrains|
+|---------|
+|<a href='#致谢'><img src="https://cdn.jsdelivr.net/gh/TyrantLucifer/MyImageRepository/img/jetbrains-variant-2.png" height="300" width="300" /></a> |
