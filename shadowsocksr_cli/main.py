@@ -8,6 +8,8 @@
 """
 
 import argparse
+import traceback
+
 from shadowsocksr_cli.functions import *
 
 
@@ -20,7 +22,7 @@ def get_parser():
     parser.add_argument("-p", "--port", default=1080, metavar="local_port", type=int,
                         help="assign local proxy port,use with -s")
     parser.add_argument("-s", "--start", metavar="ssr_id", type=int, help="start ssr proxy")
-    parser.add_argument("-S", "--stop", nargs='?', const=1, metavar="ssr_id", type=int, help="stop ssr proxy")
+    parser.add_argument("-S", "--stop", nargs='?', const=-1, metavar="ssr_id", type=int, help="stop ssr proxy")
     parser.add_argument("-u", "--update", action="store_true", help="update ssr list")
     parser.add_argument("-v", "--version", action="store_true", help="display version")
     parser.add_argument("--generate-clash", action="store_true", help="generate clash config yaml")
@@ -42,6 +44,7 @@ def get_parser():
     parser.add_argument("--add-ssr", metavar="ssr_url", help="add ssr node")
     parser.add_argument("--test-again", metavar="ssr_node_id", type=int, help="test ssr node again")
     parser.add_argument("--print-qrcode", metavar="ssr_node_id", type=int, help="print ssr node qrcode")
+    parser.add_argument("--http", metavar="action[start stop status]", help="Manager local http server")
     parser.add_argument("--setting-global-proxy", action="store_true",
                         help="setting system global proxy,only support on " + color.red('Ubuntu Desktop'))
     parser.add_argument("--setting-pac-proxy", action="store_true",
@@ -75,19 +78,19 @@ def main():
         with open(args.append_ssr, 'r', encoding='UTF-8') as f:
             txt = f.read()
         if args.b:
-            txt = ParseShadowsocksR.base64Decode(txt)
+            txt = ParseShadowsocksr.base64_decode(txt)
         ssr_set = set()
         for line in txt.splitlines():
             for ssr in re.findall(r'ssr://[0-9a-zA-Z=-_/+]+', line):
                 ssr_set.add(ssr)
         for ssr in ssr_set:
             try:
-                UpdateConfigurations.addSSRNode(ssr)
+                UpdateConfigurations.append_ssr_node(ssr)
             except Exception as e:
                 logger.error(f'add ssr node error {ssr}')
                 logger.error(traceback.format_exc())
     elif args.clear_ssr:
-        UpdateConfigurations.clearSSRNodes(args.clear_ssr, args.all)
+        UpdateConfigurations.clear_ssr_nodes(args.clear_ssr, args.all)
     elif args.setting_address:
         UpdateConfigurations.update_local_address(args.setting_address)
     elif args.list_url:
@@ -118,6 +121,8 @@ def main():
         DisplayShadowsocksr.display_shadowsocksr_json(ssr_id=args.display_json)
     elif args.generate_clash:
         GenerateClashConfig.generate_clash_config()
+    elif args.http:
+        HandleHttpServer.handle_http_server(args.http)
     else:
         parser.print_help()
 

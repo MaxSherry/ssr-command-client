@@ -5,8 +5,7 @@ block_cipher = None
 from PyInstaller.utils.hooks import copy_metadata
 datas = copy_metadata('prettytable')
 
-
-a = Analysis(['main.py'],
+a = Analysis(['shadowsocksr_cli\\main.py'],
              pathex=['E:\\tmp\\ssr-command-client'],
              binaries=[],
              datas=datas,

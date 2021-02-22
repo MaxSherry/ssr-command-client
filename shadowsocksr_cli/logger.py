@@ -70,7 +70,7 @@ def is_ubuntu(func):
 def is_id_valid(ssr_dict_list):
     def wrapper(func):
         def judge(*args, **kwargs):
-            if kwargs['ssr_id'] < 0 or kwargs['ssr_id'] >= len(ssr_dict_list):
+            if kwargs['ssr_id'] < -1 or kwargs['ssr_id'] >= len(ssr_dict_list):
                 logger.error('Shadowsocksr id error')
                 sys.exit(1)
             else:

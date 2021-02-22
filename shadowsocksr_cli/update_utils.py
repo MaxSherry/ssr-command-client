@@ -52,6 +52,8 @@ class UpdateShadowsocksr(object):
     def add_shadowsocksr_by_url(self, ssr_url):
         ssr_dict = ParseShadowsocksr.parse_shadowsocksr(ssr_url)
         ssr_dict = ShadowsocksrTest.test_shadowsocksr_connect(ssr_dict)
+        if not ssr_dict['connect']:
+            return
         ssr_dict['id'] = len(self.ssr_dict_list)
         self.ssr_dict_list.append(ssr_dict)
         self.update_cache_json()

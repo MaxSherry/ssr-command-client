@@ -78,8 +78,11 @@ class ParseShadowsocksr(object):
                         key = 'obfs_param'
                     if key == 'protoparam':
                         key = 'protocol_param'
-                    if key in key_list:
-                        ssr_dict[key] = ParseShadowsocksr.base64_decode(value)
+                    if value:
+                        if key in key_list:
+                            ssr_dict[key] = ParseShadowsocksr.base64_decode(requests.utils.unquote(value))
+                if 'remarks' not in ssr_dict:
+                    ssr_dict['remarks'] = 'unknown'
                 ssr_dict['server'] = server
                 ssr_dict['server_port'] = int(port)
                 ssr_dict['method'] = method

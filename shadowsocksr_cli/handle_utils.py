@@ -8,6 +8,7 @@
 """
 
 import signal
+
 from shadowsocksr_cli.shadowsocks import daemon, eventloop, tcprelay, udprelay, asyncdns
 from shadowsocksr_cli.logger import *
 
@@ -70,6 +71,8 @@ class ControlShadowsocksr(object):
             logger.info('Press Ctrl+C to stop shadowsocksr')
             loop.run()
         except Exception as e:
+            from shadowsocksr_cli.functions import UpdateConfigurations
+            UpdateConfigurations.clear_ssr_nodes(ssr_dict['id'])
             logger.error(e)
             sys.exit(1)
 
@@ -124,5 +127,7 @@ class ControlShadowsocksr(object):
             logger.info('Shadowsocksr is start on {0}:{1}'.format(kwargs['local_address'], kwargs['local_port']))
             loop.run()
         except Exception as e:
+            from shadowsocksr_cli.functions import UpdateConfigurations
+            UpdateConfigurations.clear_ssr_nodes(ssr_dict['id'])
             logger.error(e)
             sys.exit(1)

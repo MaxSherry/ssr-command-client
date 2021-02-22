@@ -124,6 +124,26 @@ class UpdateConfigurations(object):
         logger.info('Update local address to: {0}'.format(local_address))
 
     @staticmethod
+    def append_ssr_node(ssr_url):
+        for ssrInfo in update_shadowsocksr.ssr_dict_list:
+            if ssr_url == ssrInfo['ssr_url']:
+                logger.info(f'add ssr node is exist {ssr_url}')
+                return
+        update_shadowsocksr.add_shadowsocksr_by_url(ssr_url)
+
+    @staticmethod
+    def clear_ssr_nodes(clear_ssr, all=None):
+        if all:
+            update_shadowsocksr.ssr_dict_list.clear()
+        elif clear_ssr == 'fail':
+            update_shadowsocksr.ssr_dict_list[:] = [ssrInfo for ssrInfo in update_shadowsocksr.ssr_dict_list if ssrInfo['connect']]
+        else:
+            del update_shadowsocksr.ssr_dict_list[int(clear_ssr)]
+        for ssrInfo in update_shadowsocksr.ssr_dict_list:
+            ssrInfo['id'] = update_shadowsocksr.ssr_dict_list.index(ssrInfo)
+        update_shadowsocksr.update_cache_json()
+        
+    @staticmethod
     def add_subscribe_url(subscribe_url):
         update_shadowsocksr.subscribe_url_list.append(subscribe_url)
         Setting.set_value('subscribe_url',
@@ -158,6 +178,10 @@ class HandleShadowsocksr(object):
     """
 
     @staticmethod
+    def running_ssr_id_file():
+        return os.path.join(init_config.config_dir, 'running_ssr.id')
+
+    @staticmethod
     @is_id_valid(update_shadowsocksr.ssr_dict_list)
     def start(ssr_id, local_port):
         if init_config.platform == 'win32':
@@ -167,6 +191,8 @@ class HandleShadowsocksr(object):
                                                  timeout=int(Setting.get_value('timeout')),
                                                  workers=int(Setting.get_value('workers')))
         else:
+            with open(HandleShadowsocksr.running_ssr_id_file(), 'w') as f:
+                f.write(str(ssr_id))
             ControlShadowsocksr.operate_on_unix(update_shadowsocksr.ssr_dict_list[ssr_id],
                                                 local_address=Setting.get_value('local_address'),
                                                 local_port=int(local_port),
@@ -179,6 +205,9 @@ class HandleShadowsocksr(object):
     @staticmethod
     @is_id_valid(update_shadowsocksr.ssr_dict_list)
     def stop(ssr_id, local_port):
+        if ssr_id == -1:
+            with open(HandleShadowsocksr.running_ssr_id_file(), 'r') as f:
+                ssr_id = int(f.readline())
         ControlShadowsocksr.operate_on_unix(update_shadowsocksr.ssr_dict_list[ssr_id],
                                             local_address=Setting.get_value('local_address'),
                                             local_port=int(local_port),
@@ -381,3 +410,41 @@ class GenerateClashConfig(object):
             yaml.dump(yaml_dict, file, default_flow_style=False, encoding='utf-8', allow_unicode=True)
         logger.info("Generate clash config yaml successfully.")
         logger.info("You can find it on {0}".format(init_config.clash_config_file))
+
+
+class HandleHttpServer(object):
+    """控制本地http server
+
+    """
+
+    def __init__(self):
+        pass
+
+    @staticmethod
+    def start(local_port=1081):
+        if init_config.platform == 'win32':
+            http_local_server.start_on_windows(local_port=local_port)
+        else:
+            http_local_server.start(init_config.http_log_file,
+                                    local_port=local_port)
+
+    @staticmethod
+    def stop():
+        http_local_server.stop()
+
+    @staticmethod
+    def handle_http_server(action, local_port=1081):
+        if action == "start":
+            HandleHttpServer.start(local_port)
+        elif action == "stop":
+            if init_config.platform == "win32":
+                logger.error("Only support unix platform")
+            else:
+                HandleHttpServer.stop()
+        elif action == "status":
+            if init_config.platform == "win32":
+                logger.error("Only support unix platform")
+            else:
+                logger.info("HTTP Server status:{0}".format(http_local_server.is_running()))
+        else:
+            logger.error("--http not support this option: {0}".format(action))
