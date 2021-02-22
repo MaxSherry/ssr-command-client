@@ -4,23 +4,9 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0008bd76-ab60-41db-a647-4e949b7293ca" name="Default Changelist" comment="添加linux下打包脚本，poetry添加yam依赖">
-      <change afterPath="$PROJECT_DIR$/shadowsocksr_cli/http_utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="0008bd76-ab60-41db-a647-4e949b7293ca" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/funcitions/Functions.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.spec" beforeDir="false" afterPath="$PROJECT_DIR$/main.spec" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shadowsocksr_cli/common.py" beforeDir="false" afterPath="$PROJECT_DIR$/shadowsocksr_cli/common.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shadowsocksr_cli/functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/shadowsocksr_cli/functions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shadowsocksr_cli/handle_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/shadowsocksr_cli/handle_utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shadowsocksr_cli/init_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/shadowsocksr_cli/init_utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shadowsocksr_cli/logger.py" beforeDir="false" afterPath="$PROJECT_DIR$/shadowsocksr_cli/logger.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shadowsocksr_cli/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/shadowsocksr_cli/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shadowsocksr_cli/parse_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/shadowsocksr_cli/parse_utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shadowsocksr_cli/update_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/shadowsocksr_cli/update_utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/HandleSSRUtils.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/ParseUtils.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/SSRTestUtils.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -157,17 +143,6 @@
                   <entry key="Show.Git.Branches" value="true" />
                 </map>
               </option>
-              <option name="FILTERS">
-                <map>
-                  <entry key="branch">
-                    <value>
-                      <list>
-                        <option value="2.0" />
-                      </list>
-                    </value>
-                  </entry>
-                </map>
-              </option>
               <option name="COLUMN_ID_WIDTH">
                 <map>
                   <entry key="Table.Default.Author.ColumnIdWidth" value="74" />
@@ -217,7 +192,8 @@
     <MESSAGE value="测速异常，删除对应的ssr_id时，加锁处理。优化相关的代码" />
     <MESSAGE value="linux下开启和关闭将ssr_id写到文件中去，关闭不用指定ssr_id" />
     <MESSAGE value="添加linux下打包脚本，poetry添加yam依赖" />
-    <option name="LAST_COMMIT_MESSAGE" value="添加linux下打包脚本，poetry添加yam依赖" />
+    <MESSAGE value="合并升级2.1版本" />
+    <option name="LAST_COMMIT_MESSAGE" value="合并升级2.1版本" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

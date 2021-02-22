@@ -26,6 +26,11 @@ cd ssr-command-client
 python(python3) setup.py install
 ```
 
+- 开发安装
+```shell
+python(python3) setup.py develop
+```
+
 - pip安装
 ```shell
 pip(pip3) install shadowsocksr-cli
