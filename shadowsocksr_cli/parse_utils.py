@@ -83,6 +83,10 @@ class ParseShadowsocksr(object):
                             ssr_dict[key] = ParseShadowsocksr.base64_decode(requests.utils.unquote(value))
                 if 'remarks' not in ssr_dict:
                     ssr_dict['remarks'] = 'unknown'
+                if 'protocol_param' not in ssr_dict:
+                    ssr_dict['protocol_param'] = ''
+                if 'obfs_param' not in ssr_dict:
+                    ssr_dict['obfs_param'] = ''
                 ssr_dict['server'] = server
                 ssr_dict['server_port'] = int(port)
                 ssr_dict['method'] = method
