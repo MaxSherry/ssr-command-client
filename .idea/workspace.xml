@@ -7,7 +7,6 @@
     <list default="true" id="0008bd76-ab60-41db-a647-4e949b7293ca" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/shadowsocksr_cli/handle_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/shadowsocksr_cli/handle_utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shadowsocksr_cli/parse_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/shadowsocksr_cli/parse_utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -195,7 +194,8 @@
     <MESSAGE value="添加linux下打包脚本，poetry添加yam依赖" />
     <MESSAGE value="合并升级2.1版本" />
     <MESSAGE value="开发时使用python(python3) setup.py develop命令安装模块" />
-    <option name="LAST_COMMIT_MESSAGE" value="开发时使用python(python3) setup.py develop命令安装模块" />
+    <MESSAGE value="ssr协议中没有protocol_param,obfs_param值时，默认设置成空字符串，否则会报异常" />
+    <option name="LAST_COMMIT_MESSAGE" value="ssr协议中没有protocol_param,obfs_param值时，默认设置成空字符串，否则会报异常" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

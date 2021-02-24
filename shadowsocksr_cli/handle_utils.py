@@ -73,7 +73,8 @@ class ControlShadowsocksr(object):
         except Exception as e:
             from shadowsocksr_cli.functions import UpdateConfigurations
             UpdateConfigurations.clear_ssr_nodes(ssr_dict['id'])
-            logger.error(e)
+            import traceback
+            logger.error(traceback.format_exc())
             sys.exit(1)
 
     @staticmethod
@@ -129,5 +130,6 @@ class ControlShadowsocksr(object):
         except Exception as e:
             from shadowsocksr_cli.functions import UpdateConfigurations
             UpdateConfigurations.clear_ssr_nodes(ssr_dict['id'])
-            logger.error(e)
+            import traceback
+            logger.error(traceback.format_exc())
             sys.exit(1)
