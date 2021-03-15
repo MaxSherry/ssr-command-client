@@ -8,12 +8,13 @@
 """
 
 import atexit
-import os
 import signal
-import sys
-import time
-from http.server import HTTPServer, SimpleHTTPRequestHandler
+import socket
+import re
+import requests
+import threading
 from shadowsocksr_cli.logger import *
+
 
 class Daemon(object):
     """
@@ -205,23 +206,107 @@ class Daemon(object):
 
 
 class HTTPLocalServer(Daemon):
+
     def __init__(self, name, save_path, stdin=os.devnull, stdout=os.devnull, stderr=os.devnull, home_dir='.', umask=22,
                  verbose=1):
         Daemon.__init__(self, save_path, stdin, stdout, stderr, home_dir, umask, verbose)
         self.name = name
+        self.server_socket = None
+
+    def __init_http_server(self, port):
+        self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        self.server_socket.bind(("", port))
+        self.server_socket.listen(128)
+
+    def __deal_request(self, client_socket):
+        request = client_socket.recv(1024).decode('unicode_escape')
+        request_lines = request.splitlines()
+        if len(request_lines) == 0 or re.match(r"[^/]+(/[^ ]*)", request_lines[0]) is None:
+            return
+        else:
+            ret = re.match(r"[^/]+(/[^ ]*)", request_lines[0]).group(1)
+        if ret == "/":
+            ret = "/index.html"
+        index = ret.find('?')
+        if index != -1:
+            ret = ret[0:index]
+        try:
+            f = open(ret[1:], "rb")
+        except FileNotFoundError:
+            response_body = "file not found, 请输入正确的url"
+            response_header = "HTTP/1.1 404 not found\r\n"
+            response_header += "Content-Type: text/html; charset=utf-8\r\n"
+            response_header += "\r\n"
+            client_socket.send(response_header.encode('utf-8'))
+            client_socket.send(response_body.encode("utf-8"))
+        else:
+            content = f.read()
+            f.close()
+            response_body = content
+            response_header = "HTTP/1.1 200 OK\r\n"
+            response_header += "Content-Type: text/html; charset=utf-8\r\n"
+            response_header += "\r\n"
+            client_socket.send(response_header.encode("utf-8") + response_body)
+
+    def __serve_forever(self):
+        while True:
+            client_socket, client_addr = self.server_socket.accept()
+            self.__deal_request(client_socket)
+            client_socket.close()
 
     def start_on_windows(self, *args, **kwargs):
-        port = kwargs['local_port']
-        httpd = HTTPServer(("", port), SimpleHTTPRequestHandler)
-        try:
-            logger.info("HTTP Server start on localhost:{0}...".format(port))
-            httpd.serve_forever()
-        except KeyboardInterrupt:
-            logger.info("HTTP Server stop...")
+        port = kwargs['http_port']
+        self.__init_http_server(port)
+
+        def handler(signum, frame):
+            logger.info('received SIGQUIT, doing graceful shutting down..')
+            GeneratePac.remove_pac()
+            logger.info('HTTP Server stop...')
+            exit(0)
+
+        signal.signal(signal.SIGINT, handler)
+        signal.signal(signal.SIGTERM, handler)
+
+        logger.info("HTTP Server start on localhost:{0}...".format(port))
+        t = threading.Thread(target=self.__serve_forever, args=())
+        t.daemon = True
+        t.start()
+        while True:
+            time.sleep(1)
 
     def run(self, *args, **kwargs):
-        port = kwargs['local_port']
-        httpd = HTTPServer(("", port), SimpleHTTPRequestHandler)
-        httpd.serve_forever()
+        port = kwargs['http_port']
+        self.__init_http_server(port)
+        self.__serve_forever()
         logger.info("HTTP Server start on *:{0}".format(port))
 
+
+class GeneratePac(object):
+
+    def __init__(self):
+        pass
+
+    @staticmethod
+    def __download_pac_template():
+        logger.info("Start download pac template...")
+        result = requests.get('https://tyrantlucifer.com/ssr/autoproxy.pac')
+        result.encoding = 'utf-8'
+        with open(init_config.pac_file, 'w', encoding='utf-8') as file:
+            file.write(result.text)
+
+    @staticmethod
+    def generate_pac(address, port):
+        if not os.path.exists(init_config.pac_file):
+            GeneratePac.__download_pac_template()
+        with open(init_config.pac_file, 'r', encoding='utf-8') as file:
+            content = file.read()
+        with open("autoproxy.pac", 'w', encoding='utf-8') as file:
+            content = content.replace("address", address)
+            content = content.replace("port", str(port))
+            file.write(content)
+        logger.info("Generate pac file successfully...")
+
+    @staticmethod
+    def remove_pac():
+        os.remove("autoproxy.pac")

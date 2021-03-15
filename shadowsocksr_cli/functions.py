@@ -94,9 +94,8 @@ class DisplayShadowsocksr(object):
             logger.info("Current version {0} is newest. Please enjoy.".format(version))
         else:
             logger.info("Current version: {0}".format(init_config.version))
-            logger.info("Newest version: {0}, "
-                        "you can download on https://github.com/TyrantLucifer/ssr-command-client/releases/tag/v{1}".
-                        format(version, version))
+            logger.info("Newest version: {0}".format(version))
+            logger.info("You can use 'pip(pip3) install shadowsocksr-cli' to update.")
         logger.info(tips_message)
 
 
@@ -240,8 +239,9 @@ class UpdateSystemProxy(object):
     def __init__(self):
         pass
 
+    @staticmethod
     @is_ubuntu
-    def open_global_proxy(self, local_port):
+    def open_global_proxy(local_port):
         cmd = "gsettings set org.gnome.system.proxy mode 'manual'"
         os.system(cmd)
         cmd = "gsettings set org.gnome.system.proxy.socks host {0}".format(Setting.get_value('local_address'))
@@ -251,22 +251,22 @@ class UpdateSystemProxy(object):
         logger.info("open global socks5 proxy - {0}:{1}".format(Setting.get_value('local_address'),
                                                                 local_port))
 
+    @staticmethod
     @is_ubuntu
-    def open_pac_proxy(self):
-        logger.info("Start to create pac file, it will take a lot of time")
-        result = requests.get('https://tyrantlucifer.com/ssr/autoproxy.pac')
-        result.encoding = 'utf-8'
-        with open(init_config.pac_file, 'w', encoding='utf-8') as file:
-            file.write(result.text)
-        logger.info('Generate pac file successfully')
-        cmd = "gsettings set org.gnome.system.proxy autoconfig-url file://{0}".format(init_config.pac_file)
-        os.system(cmd)
-        logger.info('Open pac proxy - {0}:{1}'.format(Setting.get_value('local_address'), 1080))
+    def open_pac_proxy(local_port, http_port=80):
+        HandleHttpServer.handle_http_server("start", local_port, http_port)
 
+        cmd = "gsettings set org.gnome.system.proxy autoconfig-url http://{0}:{1}/autoproxy.pac". \
+            format(Setting.get_value('local_address'), http_port)
+        os.system(cmd)
+        logger.info('Open pac proxy - {0}:{1}'.format(Setting.get_value('local_address'), local_port))
+
+    @staticmethod
     @is_ubuntu
-    def close_proxy(self):
+    def close_proxy(local_port, http_port=80):
         cmd = "gsettings set org.gnome.system.proxy mode 'none'"
         os.system(cmd)
+        HandleHttpServer.handle_http_server("stop", local_port, http_port)
         logger.info("Close system proxy")
 
 
@@ -421,21 +421,23 @@ class HandleHttpServer(object):
         pass
 
     @staticmethod
-    def start(local_port=1081):
+    def start(local_port, http_port=80):
+        GeneratePac.generate_pac(Setting.get_value("local_address"), local_port)
         if init_config.platform == 'win32':
-            http_local_server.start_on_windows(local_port=local_port)
+            http_local_server.start_on_windows(http_port=http_port)
         else:
             http_local_server.start(init_config.http_log_file,
-                                    local_port=local_port)
+                                    http_port=http_port)
 
     @staticmethod
     def stop():
+        GeneratePac.remove_pac()
         http_local_server.stop()
 
     @staticmethod
-    def handle_http_server(action, local_port=1081):
+    def handle_http_server(action, local_port, http_port=80):
         if action == "start":
-            HandleHttpServer.start(local_port)
+            HandleHttpServer.start(local_port, http_port=http_port)
         elif action == "stop":
             if init_config.platform == "win32":
                 logger.error("Only support unix platform")
