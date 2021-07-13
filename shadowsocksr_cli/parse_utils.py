@@ -72,6 +72,8 @@ class ParseShadowsocksr(object):
                     'group'
                 ]
                 for params in second_encryption_param_list:
+                    if '=' not in params:
+                        break
                     key = params.split('=')[0]
                     value = params.split('=')[1]
                     if key == 'obfsparam':
